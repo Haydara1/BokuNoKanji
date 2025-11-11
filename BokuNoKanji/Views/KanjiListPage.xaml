@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BokuNoKanji.Views.KanjiListPage"
+             Title="Kanji Results">
+
+    <!-- Remove the BindingContext from XAML -->
+
+    <Grid RowDefinitions="Auto, *">
+        <!-- Header with result count and back button -->
+        <Frame Grid.Row="0" Padding="10" BackgroundColor="{AppThemeBinding Light=#F5F5F5, Dark=#2D2D30}">
+            <Grid ColumnDefinitions="Auto, *, Auto">
+                <Button Grid.Column="0" Text="← Back" Clicked="BackButton_Clicked" 
+                        WidthRequest="80" HorizontalOptions="Start"/>
+
+                <Label Grid.Column="1" Text="{Binding DisplayedKanji.Count, StringFormat='{0} kanji found'}" 
+                       HorizontalOptions="Center" VerticalOptions="Center" />
+
+                <Button Grid.Column="2" Text="Clear" Clicked="ClearButton_Clicked" 
+                        WidthRequest="80" HorizontalOptions="End"/>
+            </Grid>
+        </Frame>
+
+        <!-- Kanji Collection -->
+        <CollectionView Grid.Row="1"
+                        ItemsSource="{Binding DisplayedKanji}"
+                        SelectionMode="Single"
+                        x:Name="KanjiCollection"
+                        SelectionChanged="OnKanjiSelected"
+                        Margin="5">
+
+            <CollectionView.ItemsLayout>
+                <GridItemsLayout Orientation="Vertical" Span="4" 
+                                 VerticalItemSpacing="5"/>
+            </CollectionView.ItemsLayout>
+
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame Padding="10" Margin="10"
+                           WidthRequest="70" HeightRequest="70"
+                           BackgroundColor="White"
+                           BorderColor="Gray"
+                           CornerRadius="8"
+                           HasShadow="True"
+                           >
+                        <Label Text="{Binding Character}"
+                               FontSize="28"
+                               HorizontalOptions="Center"
+                               VerticalOptions="Center"/>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+
+            <!-- Empty State -->
+            <CollectionView.EmptyView>
+                <StackLayout VerticalOptions="Center" HorizontalOptions="Center" Padding="20">
+                    <Label Text="No kanji found" 
+                           FontSize="16"
+                           HorizontalOptions="Center" />
+                    <Label Text="Try a different search term"
+                           FontSize="14"
+                           TextColor="Gray"
+                           HorizontalOptions="Center" />
+                    <Button Text="Back to Search" 
+                            Clicked="BackButton_Clicked"
+                            Margin="0,20,0,0"
+                            HorizontalOptions="Center" />
+                </StackLayout>
+            </CollectionView.EmptyView>
+
+        </CollectionView>
+    </Grid>
+</ContentPage>
