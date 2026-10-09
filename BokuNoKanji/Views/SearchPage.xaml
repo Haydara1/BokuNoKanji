@@ -37,7 +37,8 @@
             </Border>
 
             <!-- Search tips -->
-            <Border Padding="16"
+            <Border x:Name="TipsBorder"
+                    Padding="16"
                     BackgroundColor="{AppThemeBinding Light=#F4EAE2, Dark=#302722}"
                     StrokeThickness="0"
                     StrokeShape="RoundRectangle 14">
