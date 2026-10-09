@@ -90,49 +90,49 @@ jobs:
           path: BokuNoKanji-Windows-x64.zip
           if-no-files-found: error
 
-  build-macos:
-    name: Build macOS
-    runs-on: macos-latest
+  # build-macos:
+  #   name: Build macOS
+  #   runs-on: macos-latest
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  #   steps:
+  #     - name: Checkout repository
+  #       uses: actions/checkout@v4
 
-      - name: Install .NET
-        uses: actions/setup-dotnet@v4
-        with:
-          dotnet-version: 9.0.x
+  #     - name: Install .NET
+  #       uses: actions/setup-dotnet@v4
+  #       with:
+  #         dotnet-version: 9.0.x
 
-      - name: Install MAUI workload
-        run: dotnet workload install maui
+  #     - name: Install MAUI workload
+  #       run: dotnet workload install maui
 
-      - name: Publish Mac Catalyst app
-        run: >
-          dotnet publish BokuNoKanji/BokuNoKanji.csproj
-          -c Release
-          -f net9.0-maccatalyst
-          -r maccatalyst-arm64
-          --self-contained true
-          -p:EnableCodeSigning=false
-          -o ./publish/macos
+  #     - name: Publish Mac Catalyst app
+  #       run: >
+  #         dotnet publish BokuNoKanji/BokuNoKanji.csproj
+  #         -c Release
+  #         -f net9.0-maccatalyst
+  #         -r maccatalyst-arm64
+  #         --self-contained true
+  #         -p:EnableCodeSigning=false
+  #         -o ./publish/macos
 
-      - name: Package macOS app
-        run: |
-          APP_PATH=$(find ./publish/macos -type d -name "*.app" -print -quit)
+  #     - name: Package macOS app
+  #       run: |
+  #         APP_PATH=$(find ./publish/macos -type d -name "*.app" -print -quit)
 
-          if [ -z "$APP_PATH" ]; then
-            echo "No .app bundle was produced."
-            find ./publish/macos -maxdepth 3 -print
-            exit 1
-          fi
+  #         if [ -z "$APP_PATH" ]; then
+  #           echo "No .app bundle was produced."
+  #           find ./publish/macos -maxdepth 3 -print
+  #           exit 1
+  #         fi
 
-          ditto -c -k --sequesterRsrc --keepParent \
-            "$APP_PATH" \
-            ./BokuNoKanji-macOS-arm64.zip
+  #         ditto -c -k --sequesterRsrc --keepParent \
+  #           "$APP_PATH" \
+  #           ./BokuNoKanji-macOS-arm64.zip
 
-      - name: Upload macOS artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: BokuNoKanji-macOS-arm64
-          path: BokuNoKanji-macOS-arm64.zip
-          if-no-files-found: error
+  #     - name: Upload macOS artifact
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: BokuNoKanji-macOS-arm64
+  #         path: BokuNoKanji-macOS-arm64.zip
+  #         if-no-files-found: error
