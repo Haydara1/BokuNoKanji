@@ -120,13 +120,19 @@ jobs:
           -f net9.0-maccatalyst
           -c Release
       
+      
+      - name: Clean previous build output
+        run: |
+          rm -rf BokuNoKanji/bin BokuNoKanji/obj
+
       - name: Publish Mac Catalyst app
-        run: >
-          dotnet publish BokuNoKanji/BokuNoKanji.csproj
-          -f net9.0-maccatalyst
-          -c Release
-          -p:RuntimeIdentifier=maccatalyst-arm64
-          -p:EnableCodeSigning=false
+        run: |
+          dotnet publish BokuNoKanji/BokuNoKanji.csproj \
+            -f net9.0-maccatalyst \
+            -c Release \
+            -r maccatalyst-arm64 \
+            -p:EnableCodeSigning=false \
+            -o BokuNoKanji/publish-arm64
 
       
       - name: Inspect publish output
@@ -136,18 +142,20 @@ jobs:
             \( -name '*.app' -o -name '*.pkg' -o -name '*.dmg' \) \
             -print || true
 
+      
       - name: Package Mac app
         shell: bash
         run: |
-          APP_PATH="$(find BokuNoKanji/bin/Release \
+          APP_PATH="$(find BokuNoKanji/publish-arm64 \
             -type d -name '*.app' -print -quit)"
 
           if [ -z "$APP_PATH" ]; then
-            echo "No .app bundle found. Publish output:"
-            find BokuNoKanji/bin/Release -maxdepth 8 -print || true
+            echo "No .app bundle found in ARM64 publish output"
+            find BokuNoKanji/publish-arm64 -maxdepth 5 -print || true
             exit 1
           fi
 
+          file "$APP_PATH/Contents/MacOS/"*
           ditto -c -k --sequesterRsrc --keepParent \
             "$APP_PATH" BokuNoKanji-macOS.zip
 
