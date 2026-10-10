@@ -37,7 +37,7 @@
             </Border>
 
             <!-- Search tips -->
-            <Border x:Name=""
+            <Border
                     Padding="16"
                     BackgroundColor="{AppThemeBinding Light=#F4EAE2, Dark=#302722}"
                     StrokeThickness="0"

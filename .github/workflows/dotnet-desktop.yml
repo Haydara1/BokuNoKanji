@@ -111,11 +111,11 @@ jobs:
         run: dotnet workload install maui
 
       - name: Restore
-        run: dotnet restore BokuNoKanji.csproj
+        run: dotnet restore BokuNoKanji/BokuNoKanji.csproj
 
       - name: Build Mac Catalyst
         run: >
-          dotnet build BokuNoKanji.csproj
+          dotnet build BokuNoKanji/BokuNoKanji.csproj
           -f net9.0-maccatalyst
           -c Release
 
