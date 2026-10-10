@@ -1,5 +1,4 @@
-﻿```csharp
-using BokuNoKanji.Models;
+﻿using BokuNoKanji.Models;
 using BokuNoKanji.Services;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -174,4 +173,4 @@ public class SearchViewModel
         };
     }
 }
-```
+
