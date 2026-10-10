@@ -119,6 +119,23 @@ jobs:
           dotnet build BokuNoKanji/BokuNoKanji.csproj
           -f net9.0-maccatalyst
           -c Release
+      
+      - name: Publish Mac Catalyst app
+        run: >
+          dotnet publish BokuNoKanji/BokuNoKanji.csproj
+          -f net9.0-maccatalyst
+          -c Release
+          -p:RuntimeIdentifier=maccatalyst-arm64
+          -p:EnableCodeSigning=false
+
+      - name: Upload Mac app
+        uses: actions/upload-artifact@v4
+        with:
+          name: BokuNoKanji-macOS
+          path: BokuNoKanji/bin/Release/net9.0-maccatalyst/maccatalyst-arm64/publish/*.app
+          if-no-files-found: error
+
+
 
 
 
