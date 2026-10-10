@@ -128,11 +128,34 @@ jobs:
           -p:RuntimeIdentifier=maccatalyst-arm64
           -p:EnableCodeSigning=false
 
+      
+      - name: Inspect publish output
+        run: |
+          echo "Looking for generated Mac apps..."
+          find BokuNoKanji/bin/Release -maxdepth 8 \
+            \( -name '*.app' -o -name '*.pkg' -o -name '*.dmg' \) \
+            -print || true
+
+      - name: Package Mac app
+        shell: bash
+        run: |
+          APP_PATH="$(find BokuNoKanji/bin/Release \
+            -type d -name '*.app' -print -quit)"
+
+          if [ -z "$APP_PATH" ]; then
+            echo "No .app bundle found. Publish output:"
+            find BokuNoKanji/bin/Release -maxdepth 8 -print || true
+            exit 1
+          fi
+
+          ditto -c -k --sequesterRsrc --keepParent \
+            "$APP_PATH" BokuNoKanji-macOS.zip
+
       - name: Upload Mac app
         uses: actions/upload-artifact@v4
         with:
           name: BokuNoKanji-macOS
-          path: BokuNoKanji/bin/Release/net9.0-maccatalyst/maccatalyst-arm64/publish/*.app
+          path: BokuNoKanji-macOS.zip
           if-no-files-found: error
 
 
