@@ -69,6 +69,6 @@ public static class KanjiDataService
         public string[]? kun_readings { get; set; }
         public int? grade { get; set; }
         public int? jlpt { get; set; }
-        public int? stroke_count { get; set; }
+        public int stroke_count { get; set; }
     }
 }
